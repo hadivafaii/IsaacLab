@@ -1,1 +1,0 @@
-#WRITEME-Theloni: write wrapper for loading usd scene from file with/without randomization
