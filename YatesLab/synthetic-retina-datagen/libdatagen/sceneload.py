@@ -1,9 +1,27 @@
-#WRITEME-Theloni: write wrapper for loading usd scene from file with/without randomization
 import random
 import numpy as np
 import omni.isaac.lab.sim as sim_utils
 from omni.isaac.lab.assets import RigidObject, RigidObjectCfg
 import omni.isaac.core.utils.prims as prim_utils
+
+def load_scene(fpath):
+    cfg = sim_utils.GroundPlaneCfg()
+    cfg.func("/World/defaultGroundPlane", cfg)
+    # -- Lights
+    cfg = sim_utils.DistantLightCfg(intensity=3000.0, color=(0.75, 0.75, 0.75))
+    cfg.func("/World/Light", cfg)
+    
+    scene_entities = {}
+    
+    map_file_cfg = sim_utils.UsdFileCfg(usd_path=fpath)
+    
+    scene_entities[f"map"] = map_file_cfg.func("/World/Map", map_file_cfg)
+    return scene_entities
+    
+#WRITEME-YatesLab random forest with trees, rocks, random time of day, and agents
+# ref for random time of day: https://forums.developer.nvidia.com/t/randomize-time-of-day-in-dynamic-sky/273833/5
+def random_forest():
+    pass
 
 def default_scene():
     # Populate scene
