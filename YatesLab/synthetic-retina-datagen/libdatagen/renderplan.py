@@ -25,11 +25,11 @@ async def write_renderframe(writedir: str, queue: asyncio.Queue):
 
 @dataclass
 class RenderPlanConfig:
-    write_enable = True
-    outdir = "output"
-    debug_warnings = False
-    throwout_start_frames = 10
-    resolution = (480, 640)
+    write_enable: bool = True
+    outdir: str = "output"
+    debug_warnings: bool = False
+    throwout_start_frames: int = 10
+    resolution: tuple[int, int] = (480, 640)
 
 class RenderPlan:
     def __init__(self, app: SimulationApp, simctx:sim_utils.SimulationContext, scene:dict, policy: AdaptiveSamplingPolicy, conf: RenderPlanConfig):

@@ -25,6 +25,17 @@ class AdaptiveSamplingPolicy(abc.ABC):
         stacked = torch.stack(tuple(torch.stack((pos, targets)) for pos, targets in self.pose_history))
         np.save(outdir, stacked.numpy())
 
+class StaticPolicy(AdaptiveSamplingPolicy):
+    def __init__(self, init_state: tuple[torch.Tensor, torch.Tensor]):
+        super().__init__(0, init_state)
+
+    def ingest(self, data):
+        return
+
+    def pose(self) -> tuple[torch.Tensor, torch.Tensor]:
+        return self.pose_history[-1]
+    
+    
 class RandomLookWalkPolicy(AdaptiveSamplingPolicy):
     def __init__(self, sigma: float, memory:int, init_state: tuple[torch.Tensor, torch.Tensor]):
         super().__init__(memory, init_state)

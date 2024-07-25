@@ -16,9 +16,9 @@ class RenderPlanConfig:
 class RenderPlan:
 # class that declares intent to render a sequence of frames from a scene
     def __init__(self, app: SimulationApp, 
-    simctx:sim_utils.SimulationContext, 
-    scene:dict, policy: 
-    AdaptiveSamplingPolicy, 
+    simctx: sim_utils.SimulationContext, 
+    scene: dict, 
+    policy: AdaptiveSamplingPolicy, 
     conf: RenderPlanConfig) 
     # creates new renderplan instance
     # multiple can be in play at a given time, assuming mutiple simulationcontexts are available
@@ -50,6 +50,24 @@ class AdaptiveSamplingPolicy(abc.ABC):
 
     def save_posehistory(self, outdir:str) -> None
     # save history of poses to a numpy file
+    
+class StaticPolicy(AdaptiveSamplingPolicy):
+    def __init__(self, init_state: tuple[torch.Tensor, torch.Tensor])
+
+    def ingest(self, data)
+
+    def pose(self) -> tuple[torch.Tensor, torch.Tensor]
+    # always returns the initial state
+    
+class RandomLookWalkPolicy(AdaptiveSamplingPolicy):
+    def __init__(self, sigma: float, memory:int, init_state: tuple[torch.Tensor, torch.Tensor])
+
+    def ingest(self, data)
+
+    def pose(self) -> tuple[torch.Tensor, torch.Tensor]
+    # adds zero-mean gaussian random variable with variance sigma^2 to the current pose state each cycle
+    
+    
 ```
 
 ## `human.py`
