@@ -48,5 +48,5 @@ class RandomLookWalkPolicy(AdaptiveSamplingPolicy):
         delta = self.sigma * torch.randn((1, 3), device=self.pose_history[-1][0].device).repeat((2, 1))
         self.pose_history.append((self.pose_history[-1][0], self.pose_history[-1][1] + delta))
         return self.pose_history[-1]
-    
+
     

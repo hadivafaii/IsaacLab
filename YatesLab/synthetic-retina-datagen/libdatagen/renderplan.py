@@ -49,6 +49,7 @@ class RenderPlan:
         if self.conf.debug_warnings:
             self.logger.warning(s)
 
+    # TODO-YatesLab: add callbacks for updating the scene
     async def run_async(self, n_frames:int):
         try:
             eloop = asyncio.get_event_loop()
