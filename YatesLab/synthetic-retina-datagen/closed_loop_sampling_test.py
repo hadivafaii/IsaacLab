@@ -3,7 +3,7 @@ import argparse
 
 from omni.isaac.lab.app import AppLauncher
 parser = argparse.ArgumentParser(description="This script renders a scene according to an adaptive sampling policy")
-parser.add_argument("--nframes", default=200)
+parser.add_argument("--nframes", type=int, default=200)
 # append AppLauncher cli args
 AppLauncher.add_app_launcher_args(parser)
 # parse the arguments
@@ -29,12 +29,9 @@ torch.set_grad_enabled(False) # cut out memory leak from gradient tracking
 from libdatagen.renderplan import RenderPlan, RenderPlanConfig
 from libdatagen.adaptivesamplepolicy import StaticPolicy, RandomLookWalkPolicy
 from libdatagen.human import HumanOcularSystem
-from libdatagen.sceneload import default_scene, load_scene
+from libdatagen.sceneload import default_scene, load_scene, random_forest
 
 ###### SCRIPT STARTS HERE ######
-import carb
-print(carb.settings.get_settings())
-
 render_conf = RenderPlanConfig()
 render_conf.debug_warnings = True
 render_conf.resolution = (960, 1280)
@@ -44,13 +41,13 @@ sim_cfg = sim_utils.SimulationCfg(device="cuda", dt=1/100) # device must be "cud
 sim = sim_utils.SimulationContext(sim_cfg)
 sim.set_camera_view((2.5, 2.5, 2.5), (0.0, 0.0, 0.0)) # sets default viewport camera pose, will not be used in actual rendering
 
-scene =   default_scene()
+scene = random_forest()
 scene["eyes"] = HumanOcularSystem(render_conf.resolution) # must create "eyes" element for rendering
 sim.reset() # inform the simulation ctx of the scene update
 
 # create policy for pose updates
 cam_position = torch.tensor([[2.5, 2.5, 2.5], [2.51, 2.5, 2.5]], device=sim.device)
-cam_target = torch.tensor([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]], device=sim.device)
+cam_target = torch.tensor([[0.0, 1.0, 0.0], [0.0, 1.0, 0.0]], device=sim.device)
 policy = StaticPolicy((cam_position, cam_target)) #RandomLookWalkPolicy(0.01, -1, (cam_position, cam_target))
 
 # instantiate renderplan

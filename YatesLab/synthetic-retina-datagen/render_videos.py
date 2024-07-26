@@ -2,8 +2,8 @@ import os
 import argparse
 parser = argparse.ArgumentParser(description="This script renders memmap tensor data to mp4 videos for easy viewing")
 parser.add_argument("--out", default="/home/theloni/IsaacLab/YatesLab/synthetic-retina-datagen/output")
-parser.add_argument("--frames", default=180)
-parser.add_argument("--fps", default=60)
+parser.add_argument("--frames", type=int, default=180)
+parser.add_argument("--fps", type=int, default=60)
 args = parser.parse_args()
 
 import torch
